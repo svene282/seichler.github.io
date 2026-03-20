@@ -6,260 +6,515 @@
   <title>S.Eichler</title>
   <style>
     :root {
-      --bg: #f7f4ef;
-      --card: #ffffff;
-      --text: #2d2a26;
-      --muted: #6b655e;
-      --accent: #7a9e7e;
-      --accent-dark: #5f8064;
-      --border: #e8e1d8;
+      --bg: #0f1113;
+      --bg-soft: #171b1f;
+      --card: #1c2126;
+      --card-2: #20262c;
+      --text: #f3f1ec;
+      --muted: #b6b0a8;
+      --line: #2d353d;
+      --accent: #b98552;
+      --accent-2: #d9b38c;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
     }
 
     * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(185, 133, 82, 0.12), transparent 30%),
+        linear-gradient(180deg, #121518 0%, #0f1113 100%);
       color: var(--text);
       line-height: 1.6;
     }
 
-    a { color: inherit; }
+    img { max-width: 100%; display: block; }
 
-    .hero {
-      background: linear-gradient(135deg, #efe7dc, #f8f5ef);
-      padding: 72px 20px 56px;
-      border-bottom: 1px solid var(--border);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .container {
-      width: min(1100px, 92%);
+      width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(15, 17, 19, 0.78);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand span {
+      color: var(--accent-2);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .hero {
+      padding: 84px 0 56px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 28px;
-      align-items: center;
+      align-items: stretch;
     }
 
-    h1, h2, h3 { margin-top: 0; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border: 1px solid rgba(217, 179, 140, 0.18);
+      background: rgba(185, 133, 82, 0.08);
+      border-radius: 999px;
+      color: var(--accent-2);
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
 
     h1 {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height: 1.05;
-      margin-bottom: 16px;
+      font-size: clamp(2.7rem, 6vw, 5.3rem);
+      line-height: 0.96;
+      margin-bottom: 18px;
+      letter-spacing: -0.04em;
     }
 
-    .intro {
-      font-size: 1.1rem;
+    .hero-copy {
+      font-size: 1.12rem;
       color: var(--muted);
-      max-width: 60ch;
-      margin-bottom: 24px;
+      max-width: 58ch;
+      margin-bottom: 30px;
     }
 
-    .button {
-      display: inline-block;
-      background: var(--accent);
-      color: white;
-      text-decoration: none;
-      padding: 12px 18px;
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
       border-radius: 999px;
-      font-weight: bold;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: 0.2s ease;
     }
 
-    .button:hover { background: var(--accent-dark); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #9a673b);
+      color: var(--white);
+      box-shadow: 0 12px 30px rgba(185, 133, 82, 0.25);
+    }
 
-    .hero-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    .btn-primary:hover { transform: translateY(-1px); }
+
+    .btn-secondary {
+      border-color: rgba(255,255,255,0.1);
+      color: var(--text);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .hero-panel,
+    .section-card,
+    .project-card,
+    .about-card,
+    .contact-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel {
+      border-radius: 30px;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .hero-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 420px;
+    }
+
+    .hero-stats {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 4px;
     }
 
     .section {
-      padding: 56px 20px;
+      padding: 34px 0 26px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .section-head p {
+      max-width: 58ch;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
     }
 
     .projects {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 22px;
-      margin-top: 24px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
+    .project-card {
+      border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
     }
 
-    .card img {
+    .project-card img {
       width: 100%;
-      height: 220px;
+      height: 260px;
       object-fit: cover;
-      display: block;
     }
 
-    .card-content {
-      padding: 18px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #edf3ee;
-      color: var(--accent-dark);
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 20px;
-    }
-
-    .step {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+    .project-content {
       padding: 20px;
     }
 
-    .contact {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 24px;
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--accent-2);
+      background: rgba(185, 133, 82, 0.08);
+      border: 1px solid rgba(185, 133, 82, 0.18);
+      border-radius: 999px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+    }
+
+    .project-content p {
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .section-card {
       padding: 28px;
-      text-align: center;
+      border-radius: var(--radius);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .process-item {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .process-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(185, 133, 82, 0.14);
+      color: var(--accent-2);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+    }
+
+    .about-card,
+    .contact-card {
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .about-card p,
+    .contact-card p,
+    .contact-card li {
+      color: var(--muted);
+    }
+
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+    }
+
+    .contact-list li + li {
+      margin-top: 10px;
     }
 
     footer {
-      padding: 28px 20px 50px;
-      color: var(--muted);
-      text-align: center;
+      padding: 44px 0 70px;
+      color: #9a958d;
     }
 
-    @media (max-width: 900px) {
+    .footer-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media (max-width: 980px) {
       .hero-grid,
+      .about-grid,
       .projects,
-      .steps {
+      .process-grid {
         grid-template-columns: 1fr;
       }
 
+      .hero-panel img {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 640px) {
       .hero {
         padding-top: 56px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section-card,
+      .about-card,
+      .contact-card,
+      .project-content {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="container hero-grid">
-      <div>
-        <p style="font-weight: bold; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-dark);">Kreativ · Selbermachen · Dokumentieren</p>
-        <h1>S.Eichler</h1>
-        <p class="intro">
-          Alles mit und rund um das Thema Holz – Projekte, Ideen und Anleitungen aus der Werkstatt.
-        </p>
-        <a class="button" href="#projekte">Projekte ansehen</a>
-      </div>
-      <div class="hero-card">
-        <h3>Was Du hier findest</h3>
-        <p>• Möbel-Upcycling</p>
-        <p>• Deko-Ideen</p>
-        <p>• Werkstatt-Projekte</p>
-        <p>• Materialien & Kosten</p>
-        <p>• Schritt-für-Schritt-Anleitungen</p>
-      </div>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#start">S.<span>Eichler</span></a>
+      <nav class="nav-links">
+        <a href="#projekte">Projekte</a>
+        <a href="#arbeitsweise">Arbeitsweise</a>
+        <a href="#ueber-mich">Über mich</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
     </div>
   </header>
 
   <main>
+    <section class="hero" id="start">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Holzprojekte · Werkstatt · DIY</div>
+          <h1>Alles mit und rund um das Thema Holz.</h1>
+          <p class="hero-copy">
+            Willkommen bei S.Eichler. Hier zeige ich handgefertigte Projekte aus Holz – von dekorativen Einzelstücken bis zu praktischen Ideen für Haus, Garten und Werkstatt.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projekte">Projekte ansehen</a>
+            <a class="btn btn-secondary" href="#kontakt">Kontakt</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>DIY aus Holz</strong>
+              <span>Individuelle Projekte mit Liebe zum Detail.</span>
+            </div>
+            <div class="stat">
+              <strong>Saubere Umsetzung</strong>
+              <span>Vom Entwurf bis zur fertigen Oberfläche.</span>
+            </div>
+            <div class="stat">
+              <strong>Echte Bilder</strong>
+              <span>Direkt aus Werkstatt und Garten.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <img src="data:image/webp;base64,UklGRj6ZAABXRUJQVlA4IDKZAADwVAOdASqEA6MCPp1KnkwlpCaqo9QbMVATiWds8p5dH0jHB+/7Obu/2nIQkz9k5ZY7LndeP3g4pmSCelJK8jb/7D5bHfH3Xh9nxP9zwUe++oR5hP8nzh5sfpF22sdy7UaDRM6pzg+tnN96XvMa6Bnme83HzdN/R9ADzafWwwTf/2+cgf82fzWv0JEmrwTbm4AFq8Lt5r6zvGDyEiQqf9xf4e80z0v5Xuv+m1f+X7j/+f4vzHP3+q45/5T+z7P8b+5H0v+77r+wP6u/p/I7+v+J/pf5f83+Nf7f6n+5/vv7P9v/n+3/if4X/2/xv9L/t/nf5f8r/T/xf9j+2f5P8t/mf7f+L/8f7r+3/X/V/1f8f9b/Rf1f7P7r/nf6f8H/uf9r/9f83+e/xP+Z/sP8r/mf7j/lf1P+7/oP6P9j/5/7j+d/1/7H+8/1/5f7r+o/xv7b+u/rP6L+d/8b/X/5n+z/2f8n+u/5v+f/2f+f/9/+v+f/3P+P9n/Y/9H9t/4n+W/5f+R/1/7f+j/9/2/8r+v/0P8r/jf6b/T/4X+e/sP+z/nv8H/V/7v+f/mf5n/P/4v+7/6P+u/8L+5/nf6j+R/7v+H/oP8t/vv7r/6f+Z/s/7H+8/3H+v+T/4f+X/4/8j+X/5f+P/nf8v+6/6/8D+v/2P8v+X/6/9v/X/0/+3/p/4v+5/pv+R/3P+v+N/1f8j+o/2P+5/sP9b/f/7n+Q/7X+N/2f+7/oP9D/4/8X/Z/0f+f/rf8r+H/pf+N/0/9r/b/3f8T+e/4v+9/2/9j/tf4z+o/6P8z+7/nf3v+3/0P9f/b/0f9L+Q/2P9P/Z/0f9b/d/6n+g/5v+b/mP8v+N/4n+Q/3P9x/uP5r+g/3v+N/4n+g/5X+Q/3f+8/0n+Q/3v9v/3/0/5/+P/3/4n+f/5/9P+P/4f+v/2/5f+f/7n+X/9f9b+Y/5f+a/6P/0v7f+P/8P+7/8P5n+P/6P+Z/7f+L/8v9H/3P7T+e/4n+P/5P8j+X/0v8L/T/2P9v/X/2P8v+H/1f9v/X/2P+7/rP7L/7P+N/5f+v/8f+L/9/9b/f/xP8T/9//3/8P+//3/8P+7/7f+v/9v9n/t/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7c=" alt="Vogelhaus aus Holz" />
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="projekte">
       <div class="container">
-        <h2>Ausgewählte Projekte</h2>
-        <p style="color: var(--muted); max-width: 65ch;">
-          Ersetze die Beispieltexte und Bilder unten durch Deine eigenen DIY-Projekte.
-        </p>
+        <div class="section-head">
+          <div>
+            <h2>Ausgewählte Projekte</h2>
+            <p>Eine Auswahl handgefertigter Holzprojekte mit Fokus auf Gestaltung, Funktion und sauberer Ausführung.</p>
+          </div>
+        </div>
 
         <div class="projects">
-          <article class="card">
-            <img src="data:image/webp;base64,UklGRj6ZAABXRUJQVlA4IDKZAADwVAOdASqEA6MCPp1KnkwlpCaqo9QbMVATiWds8p5dH0jHB+/7Obu/2nIQkz9k5ZY7LndeP3g4pmSCelJK8jb/7D5bHfH3Xh9nxP9zwUe++oR5hP8nzh5sfpF22sdy7UaDRM6pzg+tnN96XvMa6Bnme83HzdN/R9ADzafWwwTf/2+cgf82fzWv0JEmrwTbm4AFq8Lt5r6zvGDyEiQqf9xf4e80z0v5Xuv+m1f+X7j/+f4vzHP3+q45/5T+z7P8b+5H0v+77r+wP6u/p/I7+v+J/pf5f83+Nf7f6n+5/vv7P9v/n+3/if4X/2/xv9L/t/nf5f8r/T/xf9j+2f5P8t/mf7f+L/8f7r+3/X/V/1f8f9b/Rf1f7P7r/nf6f8H/uf9r/9f83+e/xP+Z/sP8r/mf7j/lf1P+7/oP6P9j/5/7j+d/1/7H+8/1/5f7r+o/xv7b+u/rP6L+d/8b/X/5n+z/2f8n+u/5v+f/2f+f/9/+v+f/3P+P9n/Y/9H9t/4n+W/5f+R/1/7f+j/9/2/8r+v/0P8r/jf6b/T/4X+e/sP+z/nv8H/V/7v+f/mf5n/P/4v+7/6P+u/8L+5/nf6j+R/7v+H/oP8t/vv7r/6f+Z/s/7H+8/3H+v+T/4f+X/4/8j+X/5f+P/nf8v+6/6/8D+v/2P8v+X/6/9v/X/0/+3/p/4v+5/pv+R/3P+v+N/1f8j+o/2P+5/sP9b/f/7n+Q/7X+N/2f+7/oP9D/4/8X/Z/0f+f/rf8r+H/pf+N/0/9r/b/3f8T+e/4v+9/2/9j/tf4z+o/6P8z+7/nf3v+3/0P9f/b/0f9L+Q/2P9P/Z/0f9b/d/6n+g/5v+b/mP8v+N/4n+Q/3P9x/uP5r+g/3v+N/4n+g/5X+Q/3f+8/0n+Q/3v9v/3/0/5/+P/3/4n+f/5/9P+P/4f+v/2/5f+f/7n+X/9f9b+Y/5f+a/6P/0v7f+P/8P+7/8P5n+P/6P+Z/7f+L/8v9H/3P7T+e/4n+P/5P8j+X/0v8L/T/2P9v/X/2P8v+H/1f9v/X/2P+7/rP7L/7P+N/5f+v/8f+L/9/9b/f/xP8T/9//3/8P+//3/8P+7/7f+v/9v9n/t/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7c=" alt="Vogelhaus aus Holz" />
-            <div class="card-content">
+          <article class="project-card">
+            <img src="data:image/webp;base64,UklGRj6ZAABXRUJQVlA4IDKZAADwVAOdASqEA6MCPp1KnkwlpCaqo9QbMVATiWds8p5dH0jHB+/7Obu/2nIQkz9k5ZY7LndeP3g4pmSCelJK8jb/7D5bHfH3Xh9nxP9zwUe++oR5hP8nzh5sfpF22sdy7UaDRM6pzg+tnN96XvMa6Bnme83HzdN/R9ADzafWwwTf/2+cgf82fzWv0JEmrwTbm4AFq8Lt5r6zvGDyEiQqf9xf4e80z0v5Xuv+m1f+X7j/+f4vzHP3+q45/5T+z7P8b+5H0v+77r+wP6u/p/I7+v+J/pf5f83+Nf7f6n+5/vv7P9v/n+3/if4X/2/xv9L/t/nf5f8r/T/xf9j+2f5P8t/mf7f+L/8f7r+3/X/V/1f8f9b/Rf1f7P7r/nf6f8H/uf9r/9f83+e/xP+Z/sP8r/mf7j/lf1P+7/oP6P9j/5/7j+d/1/7H+8/1/5f7r+o/xv7b+u/rP6L+d/8b/X/5n+z/2f8n+u/5v+f/2f+f/9/+v+f/3P+P9n/Y/9H9t/4n+W/5f+R/1/7f+j/9/2/8r+v/0P8r/jf6b/T/4X+e/sP+z/nv8H/V/7v+f/mf5n/P/4v+7/6P+u/8L+5/nf6j+R/7v+H/oP8t/vv7r/6f+Z/s/7H+8/3H+v+T/4f+X/4/8j+X/5f+P/nf8v+6/6/8D+v/2P8v+X/6/9v/X/0/+3/p/4v+5/pv+R/3P+v+N/1f8j+o/2P+5/sP9b/f/7n+Q/7X+N/2f+7/oP9D/4/8X/Z/0f+f/rf8r+H/pf+N/0/9r/b/3f8T+e/4v+9/2/9j/tf4z+o/6P8z+7/nf3v+3/0P9f/b/0f9L+Q/2P9P/Z/0f9b/d/6n+g/5v+b/mP8v+N/4n+Q/3P9x/uP5r+g/3v+N/4n+g/5X+Q/3f+8/0n+Q/3v9v/3/0/5/+P/3/4n+f/5/9P+P/4f+v/2/5f+f/7n+X/9f9b+Y/5f+a/6P/0v7f+P/8P+7/8P5n+P/6P+Z/7f+L/8v9H/3P7T+e/4n+P/5P8j+X/0v8L/T/2P9v/X/2P8v+H/1f9v/X/2P+7/rP7L/7P+N/5f+v/8f+L/9/9b/f/xP8T/9//3/8P+//3/8P+7/7f+v/9v9n/t/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7f+7/7c=" alt="Vogelhaus aus Holz" />
+            <div class="project-content">
               <span class="tag">Garten & Vogelhaus</span>
               <h3>Vogelhaus</h3>
               <p>Dieses etwas andere Vogelhaus wurde mit der Shaper Origin erstellt und erfreut jetzt die Vögel in unserem Garten.</p>
             </div>
           </article>
 
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" alt="DIY Pflanzprojekt" />
-            <div class="card-content">
-              <span class="tag">Garten & Deko</span>
-              <h3>Pflanzkasten für den Balkon</h3>
-              <p>Ein kompakter DIY-Pflanzkasten für Kräuter, Blumen oder kleine Gemüsesorten.</p>
+          <article class="project-card">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80" alt="Holzprojekt Platzhalter" />
+            <div class="project-content">
+              <span class="tag">Nächstes Projekt</span>
+              <h3>Hier ist Platz für Projekt 2</h3>
+              <p>Ergänze hier dein nächstes Holzprojekt mit Foto und einer kurzen Beschreibung.</p>
             </div>
           </article>
 
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80" alt="Lampe DIY Projekt" />
-            <div class="card-content">
-              <span class="tag">Licht & Wohnen</span>
-              <h3>Lampe aus Glas und Holz</h3>
-              <p>Eine warme, moderne Leuchte mit einfachen Materialien und schönem Charakter.</p>
+          <article class="project-card">
+            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" alt="Holzprojekt Platzhalter" />
+            <div class="project-content">
+              <span class="tag">Nächstes Projekt</span>
+              <h3>Hier ist Platz für Projekt 3</h3>
+              <p>Auch weitere Projekte lassen sich später ganz einfach ergänzen oder austauschen.</p>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="arbeitsweise">
       <div class="container">
-        <h2>So ist jedes Projekt aufgebaut</h2>
-        <div class="steps">
-          <div class="step">
-            <h3>1. Idee</h3>
-            <p>Kurze Beschreibung des Projekts, Ziel und Inspiration.</p>
-          </div>
-          <div class="step">
-            <h3>2. Materialliste</h3>
-            <p>Alle benötigten Werkzeuge, Materialien und ungefähren Kosten.</p>
-          </div>
-          <div class="step">
-            <h3>3. Umsetzung</h3>
-            <p>Fotos, Arbeitsschritte und Tipps, damit andere es leicht nachbauen können.</p>
+        <div class="section-card">
+          <h2>Meine Arbeitsweise</h2>
+          <p>Jedes Projekt entsteht Schritt für Schritt – von der Idee bis zum fertigen Stück. Dabei stehen Material, Präzision und eine klare Formensprache im Mittelpunkt.</p>
+          <div class="process-grid">
+            <div class="process-item">
+              <div class="process-number">1</div>
+              <h3>Idee & Entwurf</h3>
+              <p>Am Anfang stehen Skizzen, Formen und die Frage, wie Funktion und Gestaltung zusammenpassen.</p>
+            </div>
+            <div class="process-item">
+              <div class="process-number">2</div>
+              <h3>Fertigung</h3>
+              <p>Die Umsetzung erfolgt mit Sorgfalt, passenden Werkzeugen und einem Blick fürs Detail.</p>
+            </div>
+            <div class="process-item">
+              <div class="process-number">3</div>
+              <h3>Oberfläche & Einsatz</h3>
+              <p>Zum Schluss bekommt jedes Projekt den passenden Feinschliff und seinen Platz in Haus oder Garten.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="contact">
+    <section class="section" id="ueber-mich">
+      <div class="container about-grid">
+        <div class="about-card">
           <h2>Über mich</h2>
-          <p>
-            Ich liebe DIY-Projekte, Upcycling und kreative Lösungen für Zuhause und Garten.
-            Diese Seite ist mein digitales Projektbuch.
-          </p>
-          <p>
-            Kontakt: <a href="mailto:deine-email@example.com">deine-email@example.com</a>
-          </p>
+          <p>Ich arbeite gern mit Holz und mag Projekte, die nicht nur gut aussehen, sondern auch einen praktischen Nutzen haben. Auf dieser Seite sammle ich eigene Ideen, umgesetzte Arbeiten und besondere Stücke aus der Werkstatt.</p>
+        </div>
+        <div class="contact-card" id="kontakt">
+          <h2>Kontakt</h2>
+          <p>Hier kann später eine E-Mail-Adresse, ein Instagram-Profil oder ein Hinweis für Anfragen ergänzt werden.</p>
+          <ul class="contact-list">
+            <li>E-Mail: deine-email@example.com</li>
+            <li>Ort: Deutschland</li>
+            <li>Schwerpunkt: Holzprojekte für Haus, Garten und Deko</li>
+          </ul>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    © 2026 Meine DIY-Projekte · Mit Leidenschaft selbst gebaut
+    <div class="container footer-box">
+      <div>© 2026 S.Eichler</div>
+      <div>DIY · Holz · Eigene Projekte</div>
+    </div>
   </footer>
 </body>
 </html>
